@@ -31,7 +31,7 @@ function MonitorUSBDevices {
             }
         }
 
-        Start-Sleep -Seconds 3  # Adjust the interval as needed
+        Start-Sleep -Seconds 1  # Adjust the interval as needed
     }
 }
 
