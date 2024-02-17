@@ -2,7 +2,10 @@ $red = "`e[31m"
 $green = "`e[32m"
 $reset = "`e[0m"
 
+$bot_token = "6158360786:AAHeCbQu0CwF0uynudTMB0dWhGtvwWu992s"
+$chat_id = "-4176953488"
 function MonitorUSBDevices {
+
     $connectedDevices = @()
 
     while ($true) {
@@ -16,6 +19,15 @@ function MonitorUSBDevices {
                 $logMessage = "[$dateTime] Connected: $($device.FriendlyName) (Instance ID: $($device.InstanceId))"
                 Write-Host $green"Connected$($reset): $($device.FriendlyName)"
                 Add-Content -Path "log" -Value $logMessage
+                $message = @"
+A USB device was plugged into <b>$(($env:USERNAME+"@"+$env:COMPUTERNAME).ToLower())</b>`n
+<b>Name</b>: $($device.FriendlyName)
+<b>Date</b>: $(Get-Date -Format "dd-MMM-yy")
+<b>Time</b>: $(Get-Date -Format "hh:mm:ss tt")
+<b>Id</b>: $($device.InstanceId)
+<b>OS</b>: $($env:OS)
+"@
+                Send-TelegramTextMessage -BotToken $bot_token -ChatID $chat_id -Message $message | Out-Null
             }
         }
 
