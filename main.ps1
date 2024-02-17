@@ -13,7 +13,7 @@ function MonitorUSBDevices {
         foreach ($device in $currentDevices) {
             if ($connectedDevices -notcontains $device.InstanceId) {
                 $connectedDevices += $device.InstanceId
-                $dateTime = Get-Date
+                $dateTime = Get-Date -Format "dd-MM-yy HH:mm:ss"
                 $logMessage = "[$dateTime] Connected: $($device.FriendlyName) (Instance ID: $($device.InstanceId))"
                 Write-Host $green"Connected$($reset): $($device.FriendlyName)"
                 Add-Content -Path "log" -Value $logMessage
