@@ -34,5 +34,4 @@ function MonitorUSBDevices {
     }
 }
 
-# Start monitoring USB devices
 MonitorUSBDevices
