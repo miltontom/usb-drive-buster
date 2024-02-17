@@ -2,7 +2,6 @@ $red = "`e[31m"
 $green = "`e[32m"
 $reset = "`e[0m"
 
-# Function to continuously monitor USB devices
 function MonitorUSBDevices {
     $connectedDevices = @()
 
@@ -31,7 +30,7 @@ function MonitorUSBDevices {
             }
         }
 
-        Start-Sleep -Seconds 1  # Adjust the interval as needed
+        Start-Sleep -Seconds 1
     }
 }
 
