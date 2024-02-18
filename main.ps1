@@ -6,7 +6,7 @@ $botToken = "6158360786:AAHeCbQu0CwF0uynudTMB0dWhGtvwWu992s"
 $telegramChatId = "-1002137906945"
 
 function getDeviceIdDetails($instanceId) {
-    if ($usbString -match "VID_([0-9A-F]+)&PID_([0-9A-F]+)\\(.+)") {
+    if ($instanceId -match "VID_([0-9A-F]+)&PID_([0-9A-F]+)\\(.+)") {
         $vendorId = $matches[1]
         $productId = $matches[2]
         $serialNumber = $matches[3]
@@ -26,24 +26,22 @@ function getVendorAndProductDetails($vendId, $prodId) {
     $details = New-Object System.Collections.ArrayList
 
     foreach ($line in $fileContent) {
-        if ($line -match "^#") {
-            continue
-        }
-
         if (-not ($line -match "^\t")) {
             $vendorDetails = $line -split '  '
             $vendorId = $vendorDetails[0]
             $vendorName = $vendorDetails[1]
+            # write-host $vendorId $vendorName
 
-            if ($vendorId -eq $vendId) {
+            if ($vendorId.Equals($vendId)) {
                 $details += $vendorName
             }
         } else {
             $productDetails = $line.TrimStart() -split '  '
             $productId = $productDetails[0]
             $productName = $productDetails[1]
+            # write-host $productId $productName
 
-            if ($productId -eq $prodId) {
+            if ($productId.Equals($prodId)) {
                 $details += $productName
             }
         }
@@ -57,7 +55,7 @@ function MonitorUSBDevices {
     $connectedDevices = @()
 
     while ($true) {
-        $currentDevices = Get-PnpDevice | Where-Object {$_.Class -eq "USB" -and $_.Present -eq $true}
+        $currentDevices = Get-PnpDevice | Where-Object {$_.Class -eq "USB" -and $_.FriendlyName -like "*USB Mass Storage Device*" -and $_.Present -eq $true}
         
         # Check for connected devices
         foreach ($device in $currentDevices) {
@@ -65,14 +63,21 @@ function MonitorUSBDevices {
                 $connectedDevices += $device.InstanceId
                 $dateTime = Get-Date -Format "dd-MM-yy HH:mm:ss"
                 $logMessage = "[$dateTime] Connected: $($device.FriendlyName) (Instance ID: $($device.InstanceId))"
-                Write-Host $ansiGreen"Connected$($ansiReset): $($device.FriendlyName)"
+                Write-Host $ansiGreen"Connected$($ansiReset): $($device.FriendlyName)`t$($device.InstanceId)"
                 Add-Content -Path $logPath -Value $logMessage
+
+                $deviceIdDetails = getDeviceIdDetails $device.InstanceId
+                $vendorId = $deviceIdDetails["Vendor"]
+                $productId = $deviceIdDetails["Product"]
+                $deviceVendorAndProductDetails = getVendorAndProductDetails $vendorId $productId
                 $message = @"
 A USB device was plugged into <b>$(($env:USERNAME+"@"+$env:COMPUTERNAME).ToLower())</b>`n
 <b>Name</b>: $($device.FriendlyName)
 <b>Date</b>: $(Get-Date -Format "dd-MMM-yy")
 <b>Time</b>: $(Get-Date -Format "hh:mm:ss tt")
-<b>Id</b>: $($device.InstanceId)
+<b>Vendor</b>: $($deviceVendorAndProductDetails[0])
+<b>Product</b>: $($deviceVendorAndProductDetails[1])
+<b>Serial</b>: $($deviceIdDetails["Serial No."])
 <b>OS</b>: $($env:OS)
 "@
                 Send-TelegramTextMessage -BotToken $botToken -ChatID $telegramChatId -Message $message | Out-Null
