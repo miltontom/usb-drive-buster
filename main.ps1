@@ -5,6 +5,33 @@ $ansiReset = "`e[0m"
 $botToken = "6158360786:AAHeCbQu0CwF0uynudTMB0dWhGtvwWu992s"
 $telegramChatId = "-1002137906945"
 
+function getVendorAndProductDetails($vendId, $prodId) {
+    $fileContent = Get-Content .\ids.txt
+    $details = New-Object System.Collections.ArrayList
+
+    foreach ($line in $fileContent) {
+        if (-not ($line -match "^\t")) {
+            $vendorDetails = $line -split '  '
+            $vendorId = $vendorDetails[0]
+            $vendorName = $vendorDetails[1]
+
+            if ($vendorId -eq $vendId) {
+                $details += $vendorName
+            }
+        } else {
+            $productDetails = $line.TrimStart() -split '  '
+            $productId = $productDetails[0]
+            $productName = $productDetails[1]
+
+            if ($productId -eq $prodId) {
+                $details += $productName
+            }
+        }
+    }
+
+    return $details
+}
+
 function MonitorUSBDevices {
     $logPath = "C:\Users\Milton\Desktop\PowerShell\usb-buster\log"
     $connectedDevices = @()
