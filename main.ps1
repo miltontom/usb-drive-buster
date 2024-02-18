@@ -1,9 +1,10 @@
-$red = "`e[31m"
-$green = "`e[32m"
-$reset = "`e[0m"
+$ansiRed = "`e[31m"
+$ansiGreen = "`e[32m"
+$ansiReset = "`e[0m"
 
-$bot_token = "6158360786:AAHeCbQu0CwF0uynudTMB0dWhGtvwWu992s"
-$chat_id = "-1002137906945"
+$botToken = "6158360786:AAHeCbQu0CwF0uynudTMB0dWhGtvwWu992s"
+$telegramChatId = "-1002137906945"
+
 function MonitorUSBDevices {
     $logPath = "C:\Users\Milton\Desktop\PowerShell\usb-buster\log"
     $connectedDevices = @()
@@ -17,7 +18,7 @@ function MonitorUSBDevices {
                 $connectedDevices += $device.InstanceId
                 $dateTime = Get-Date -Format "dd-MM-yy HH:mm:ss"
                 $logMessage = "[$dateTime] Connected: $($device.FriendlyName) (Instance ID: $($device.InstanceId))"
-                Write-Host $green"Connected$($reset): $($device.FriendlyName)"
+                Write-Host $ansiGreen"Connected$($ansiReset): $($device.FriendlyName)"
                 Add-Content -Path $logPath -Value $logMessage
                 $message = @"
 A USB device was plugged into <b>$(($env:USERNAME+"@"+$env:COMPUTERNAME).ToLower())</b>`n
@@ -27,7 +28,7 @@ A USB device was plugged into <b>$(($env:USERNAME+"@"+$env:COMPUTERNAME).ToLower
 <b>Id</b>: $($device.InstanceId)
 <b>OS</b>: $($env:OS)
 "@
-                Send-TelegramTextMessage -BotToken $bot_token -ChatID $chat_id -Message $message | Out-Null
+                Send-TelegramTextMessage -BotToken $botToken -ChatID $telegramChatId -Message $message | Out-Null
             }
         }
 
@@ -37,7 +38,7 @@ A USB device was plugged into <b>$(($env:USERNAME+"@"+$env:COMPUTERNAME).ToLower
                 $connectedDevices = $connectedDevices -ne $deviceId
                 $dateTime = Get-Date
                 $logMessage = "[$dateTime] Disconnected: $($deviceId)"
-                Write-Host $red"Disconnected$($reset): $($deviceId)"
+                Write-Host $ansiRed"Disconnected$($ansiReset): $($deviceId)"
                 Add-Content -Path $logPath -Value $logMessage
             }
         }
