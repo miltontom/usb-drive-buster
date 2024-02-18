@@ -50,6 +50,16 @@ function getVendorAndProductDetails($vendId, $prodId) {
     return $details
 }
 
+function getDriveSize($serialNumber) {
+    $disks = Get-Disk
+    
+    foreach ($disk in $disks) {
+        if ($disk.SerialNumber -like $serialNumber) {
+            return [math]::Round(($disk.Size / 1GB)) + 1
+        }
+    }
+}
+
 function MonitorUSBDevices {
     $logPath = "C:\Users\Milton\Desktop\PowerShell\usb-buster\log"
     $connectedDevices = @()
@@ -71,13 +81,14 @@ function MonitorUSBDevices {
                 $productId = $deviceIdDetails["Product"]
                 $deviceVendorAndProductDetails = getVendorAndProductDetails $vendorId $productId
                 $message = @"
-A USB device was plugged into <b>$(($env:USERNAME+"@"+$env:COMPUTERNAME).ToLower())</b>`n
+A USB drive was plugged into <b>$(($env:USERNAME+"@"+$env:COMPUTERNAME).ToLower())</b>`n
 <b>Name</b>: $($device.FriendlyName)
 <b>Date</b>: $(Get-Date -Format "dd-MMM-yy")
 <b>Time</b>: $(Get-Date -Format "hh:mm:ss tt")
 <b>Vendor</b>: $($deviceVendorAndProductDetails[0])
 <b>Product</b>: $($deviceVendorAndProductDetails[1])
 <b>Serial</b>: $($deviceIdDetails["Serial No."])
+<b>Size</b>: $(getDriveSize($deviceIdDetails["Serial No."])) GB
 <b>OS</b>: $($env:OS)
 "@
                 Send-TelegramTextMessage -BotToken $botToken -ChatID $telegramChatId -Message $message | Out-Null
