@@ -22,10 +22,14 @@ function getDeviceIdDetails($instanceId) {
 }
 
 function getVendorAndProductDetails($vendId, $prodId) {
-    $fileContent = Get-Content .\ids.txt
+    $fileContent = Get-Content .\usb.ids
     $details = New-Object System.Collections.ArrayList
 
     foreach ($line in $fileContent) {
+        if ($line -match "^#") {
+            continue
+        }
+
         if (-not ($line -match "^\t")) {
             $vendorDetails = $line -split '  '
             $vendorId = $vendorDetails[0]
