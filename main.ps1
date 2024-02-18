@@ -3,9 +3,8 @@ $green = "`e[32m"
 $reset = "`e[0m"
 
 $bot_token = "6158360786:AAHeCbQu0CwF0uynudTMB0dWhGtvwWu992s"
-$chat_id = "-4176953488"
+$chat_id = "-1002137906945"
 function MonitorUSBDevices {
-
     $connectedDevices = @()
 
     while ($true) {
