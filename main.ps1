@@ -5,6 +5,7 @@ $reset = "`e[0m"
 $bot_token = "6158360786:AAHeCbQu0CwF0uynudTMB0dWhGtvwWu992s"
 $chat_id = "-1002137906945"
 function MonitorUSBDevices {
+    $logPath = "C:\Users\Milton\Desktop\PowerShell\usb-buster\log"
     $connectedDevices = @()
 
     while ($true) {
@@ -17,7 +18,7 @@ function MonitorUSBDevices {
                 $dateTime = Get-Date -Format "dd-MM-yy HH:mm:ss"
                 $logMessage = "[$dateTime] Connected: $($device.FriendlyName) (Instance ID: $($device.InstanceId))"
                 Write-Host $green"Connected$($reset): $($device.FriendlyName)"
-                Add-Content -Path "log" -Value $logMessage
+                Add-Content -Path $logPath -Value $logMessage
                 $message = @"
 A USB device was plugged into <b>$(($env:USERNAME+"@"+$env:COMPUTERNAME).ToLower())</b>`n
 <b>Name</b>: $($device.FriendlyName)
@@ -37,7 +38,7 @@ A USB device was plugged into <b>$(($env:USERNAME+"@"+$env:COMPUTERNAME).ToLower
                 $dateTime = Get-Date
                 $logMessage = "[$dateTime] Disconnected: $($deviceId)"
                 Write-Host $red"Disconnected$($reset): $($deviceId)"
-                Add-Content -Path "log" -Value $logMessage
+                Add-Content -Path $logPath -Value $logMessage
             }
         }
 
