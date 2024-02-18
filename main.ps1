@@ -22,7 +22,7 @@ function getDeviceIdDetails($instanceId) {
 }
 
 function getVendorAndProductDetails($vendId, $prodId) {
-    $fileContent = Get-Content .\usb.ids
+    $fileContent = Get-Content $PSScriptRoot\usb.ids
     $details = New-Object System.Collections.ArrayList
 
     foreach ($line in $fileContent) {
@@ -30,7 +30,6 @@ function getVendorAndProductDetails($vendId, $prodId) {
             $vendorDetails = $line -split '  '
             $vendorId = $vendorDetails[0]
             $vendorName = $vendorDetails[1]
-            # write-host $vendorId $vendorName
 
             if ($vendorId.Equals($vendId)) {
                 $details += $vendorName
@@ -39,7 +38,6 @@ function getVendorAndProductDetails($vendId, $prodId) {
             $productDetails = $line.TrimStart() -split '  '
             $productId = $productDetails[0]
             $productName = $productDetails[1]
-            # write-host $productId $productName
 
             if ($productId.Equals($prodId)) {
                 $details += $productName
@@ -61,7 +59,7 @@ function getDriveSize($serialNumber) {
 }
 
 function MonitorUSBDevices {
-    $logPath = "C:\Users\Milton\Desktop\PowerShell\usb-buster\log"
+    $logPath = $PSScriptRoot+"\log"
     $connectedDevices = @()
 
     while ($true) {
