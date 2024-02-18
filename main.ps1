@@ -5,6 +5,22 @@ $ansiReset = "`e[0m"
 $botToken = "6158360786:AAHeCbQu0CwF0uynudTMB0dWhGtvwWu992s"
 $telegramChatId = "-1002137906945"
 
+function getDeviceIdDetails($instanceId) {
+    if ($usbString -match "VID_([0-9A-F]+)&PID_([0-9A-F]+)\\(.+)") {
+        $vendorId = $matches[1]
+        $productId = $matches[2]
+        $serialNumber = $matches[3]
+    
+        return @{
+            "Vendor" = $vendorId
+            "Product" = $productId
+            "Serial No." = $serialNumber
+        }
+    } else {
+        Write-Host "Unable to extract VID and PID from the provided string."
+    }
+}
+
 function getVendorAndProductDetails($vendId, $prodId) {
     $fileContent = Get-Content .\ids.txt
     $details = New-Object System.Collections.ArrayList
