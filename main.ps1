@@ -2,7 +2,8 @@ $ansiRed = "`e[31m"
 $ansiGreen = "`e[32m"
 $ansiReset = "`e[0m"
 
-$botToken = "6158360786:AAHeCbQu0CwF0uynudTMB0dWhGtvwWu992s"
+$botToken = "6798888655:AAG6mQYSBniTxiAsqJ_e3pq6kRPoKLJMr7Q"
+# rename this to telegramGroupChatId
 $telegramChatId = "-1002137906945"
 
 function getDeviceIdDetails($instanceId) {
@@ -71,7 +72,7 @@ function MonitorUSBDevices {
                 $connectedDevices += $device.InstanceId
                 $dateTime = Get-Date -Format "dd-MM-yy HH:mm:ss"
                 $logMessage = "[$dateTime] Connected: $($device.FriendlyName) (Instance ID: $($device.InstanceId))"
-                Write-Host $ansiGreen"Connected$($ansiReset): $($device.FriendlyName)`t$($device.InstanceId)"
+                Write-Host $ansiGreen"Connected$($ansiReset): $($device.FriendlyName)"
                 Add-Content -Path $logPath -Value $logMessage
 
                 $deviceIdDetails = getDeviceIdDetails $device.InstanceId
