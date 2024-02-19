@@ -98,7 +98,7 @@ A USB drive was plugged into <b>$(($env:USERNAME+"@"+$env:COMPUTERNAME).ToLower(
         foreach ($deviceId in $connectedDevices) {
             if ($currentDevices.InstanceId -notcontains $deviceId) {
                 $connectedDevices = $connectedDevices -ne $deviceId
-                $dateTime = Get-Date
+                $dateTime = Get-Date -Format "dd-MM-yy HH:mm:ss"
                 $logMessage = "[$dateTime] Disconnected: $($deviceId)"
                 Write-Host $ansiRed"Disconnected$($ansiReset): $($deviceId)"
                 Add-Content -Path $logPath -Value $logMessage
