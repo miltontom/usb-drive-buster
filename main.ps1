@@ -26,6 +26,10 @@ function getVendorAndProductDetails($vendId, $prodId) {
     $details = New-Object System.Collections.ArrayList
 
     foreach ($line in $fileContent) {
+        if ($line -match "^#") {
+            continue
+        }
+        
         if (-not ($line -match "^\t")) {
             $vendorDetails = $line -split '  '
             $vendorId = $vendorDetails[0]
