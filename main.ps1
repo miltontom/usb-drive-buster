@@ -67,15 +67,15 @@ function MonitorUSBDevices {
         
         # Check for connected devices
         foreach ($device in $currentDevices) {
-            $deviceIdDetails = getDeviceIdDetails $device.InstanceId
-            $vendorId = $deviceIdDetails["Vendor"]
-            $productId = $deviceIdDetails["Product"]
-            $deviceSerialId = $deviceIdDetails["Serial Id"]
-            $deviceVendorAndProductDetails = getVendorAndProductDetails $vendorId $productId
-            $vendorName = $deviceVendorAndProductDetails[0]
-            $productName = $deviceVendorAndProductDetails[1]
-
             if ($connectedDevices -notcontains $device.InstanceId) {
+                $deviceIdDetails = getDeviceIdDetails $device.InstanceId
+                $vendorId = $deviceIdDetails["Vendor"]
+                $productId = $deviceIdDetails["Product"]
+                $deviceSerialId = $deviceIdDetails["Serial Id"]
+                $deviceVendorAndProductDetails = getVendorAndProductDetails $vendorId $productId
+                $vendorName = $deviceVendorAndProductDetails[0]
+                $productName = $deviceVendorAndProductDetails[1]
+
                 $connectedDevices += $device.InstanceId
                 $dateTime = Get-Date -Format "dd-MM-yy HH:mm:ss"
                 $logMessage = "[$dateTime] [CONNECTED] $($device.FriendlyName)`n`tVENDOR: $($vendorName)`n`tPRODUCT: $($productName)`n`tSERIAL ID: $($deviceSerialId)`n`tSIZE: $(getDriveSize($deviceSerialId)) GB"
@@ -100,9 +100,17 @@ A USB drive was plugged into <b>$(($env:USERNAME+"@"+$env:COMPUTERNAME).ToLower(
         # Check for disconnected devices
         foreach ($deviceId in $connectedDevices) {
             if ($currentDevices.InstanceId -notcontains $deviceId) {
+                $deviceIdDetails = getDeviceIdDetails $deviceId
+                $vendorId = $deviceIdDetails["Vendor"]
+                $productId = $deviceIdDetails["Product"]
+                $deviceSerialId = $deviceIdDetails["Serial Id"]
+                $deviceVendorAndProductDetails = getVendorAndProductDetails $vendorId $productId
+                $vendorName = $deviceVendorAndProductDetails[0]
+                $productName = $deviceVendorAndProductDetails[1]
+
                 $connectedDevices = $connectedDevices -ne $deviceId
                 $dateTime = Get-Date -Format "dd-MM-yy HH:mm:ss"
-                $logMessage = "[$dateTime] [DISCONNECTED] $($deviceId)`n`tVENDOR: $($vendorName)`n`tPRODUCT: $($productName)`n`tSERIAL ID: $($deviceSerialId)`n`tSIZE: $(getDriveSize($deviceSerialId)) GB"
+                $logMessage = "[$dateTime] [DISCONNECTED]`n`tVENDOR: $($vendorName)`n`tPRODUCT: $($productName)`n`tSERIAL ID: $($deviceSerialId)"
                 Write-Host $ansiRed"Disconnected$($ansiReset): $($deviceId)"
                 Add-Content -Path $logPath -Value $logMessage
             }
