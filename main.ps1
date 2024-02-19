@@ -78,7 +78,7 @@ function MonitorUSBDevices {
             if ($connectedDevices -notcontains $device.InstanceId) {
                 $connectedDevices += $device.InstanceId
                 $dateTime = Get-Date -Format "dd-MM-yy HH:mm:ss"
-                $logMessage = "[$dateTime]  CONNECTED: $($device.FriendlyName)  VENDOR: $($vendorName)  PRODUCT: $($productName)  SERIAL ID: $($deviceSerialId)"
+                $logMessage = "[$dateTime] [CONNECTED] $($device.FriendlyName)`n`tVENDOR: $($vendorName)`n`tPRODUCT: $($productName)`n`tSERIAL ID: $($deviceSerialId)`n`tSIZE: $(getDriveSize($deviceSerialId)) GB"
                 Write-Host $ansiGreen"Connected$($ansiReset): $($device.FriendlyName)"
                 Add-Content -Path $logPath -Value $logMessage
 
@@ -102,7 +102,7 @@ A USB drive was plugged into <b>$(($env:USERNAME+"@"+$env:COMPUTERNAME).ToLower(
             if ($currentDevices.InstanceId -notcontains $deviceId) {
                 $connectedDevices = $connectedDevices -ne $deviceId
                 $dateTime = Get-Date -Format "dd-MM-yy HH:mm:ss"
-                $logMessage = "[$dateTime]  DISCONNECTED: $($deviceId)  VENDOR: $($vendorName)  PRODUCT: $($productName)  SERIAL ID: $($deviceSerialId)"
+                $logMessage = "[$dateTime] [DISCONNECTED] $($deviceId)`n`tVENDOR: $($vendorName)`n`tPRODUCT: $($productName)`n`tSERIAL ID: $($deviceSerialId)`n`tSIZE: $(getDriveSize($deviceSerialId)) GB"
                 Write-Host $ansiRed"Disconnected$($ansiReset): $($deviceId)"
                 Add-Content -Path $logPath -Value $logMessage
             }
