@@ -2,9 +2,8 @@ $ansiRed = "`e[31m"
 $ansiGreen = "`e[32m"
 $ansiReset = "`e[0m"
 
-$botToken = "6798888655:AAG6mQYSBniTxiAsqJ_e3pq6kRPoKLJMr7Q"
-# rename this to telegramGroupChatId
-$telegramChatId = "-1002137906945"
+$telegramBotToken = "6798888655:AAG6mQYSBniTxiAsqJ_e3pq6kRPoKLJMr7Q"
+$telegramGroupChatId = "-1002137906945"
 
 function getDeviceIdDetails($instanceId) {
     if ($instanceId -match "VID_([0-9A-F]+)&PID_([0-9A-F]+)\\(.+)") {
@@ -90,7 +89,7 @@ A USB drive was plugged into <b>$(($env:USERNAME+"@"+$env:COMPUTERNAME).ToLower(
 <b>Size</b>: $(getDriveSize($deviceIdDetails["Serial No."])) GB
 <b>OS</b>: $($env:OS)
 "@
-                Send-TelegramTextMessage -BotToken $botToken -ChatID $telegramChatId -Message $message | Out-Null
+                Send-TelegramTextMessage -BotToken $telegramBotToken -ChatID $telegramGroupChatId -Message $message | Out-Null
             }
         }
 
