@@ -59,7 +59,7 @@ function getDriveSize($serialNumber) {
 }
 
 function MonitorUSBDevices {
-    $logPath = $PSScriptRoot+"\usbdrive.log"
+    $logPath = $PSScriptRoot+"\usbdrivebuster.log"
     $connectedDevices = @()
 
     while ($true) {
