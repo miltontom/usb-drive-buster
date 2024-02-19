@@ -14,7 +14,7 @@ function getDeviceIdDetails($instanceId) {
         return @{
             "Vendor" = $vendorId
             "Product" = $productId
-            "Serial No." = $serialNumber
+            "Serial Id" = $serialNumber
         }
     } else {
         Write-Host "Unable to extract VID and PID from the provided string."
@@ -67,26 +67,30 @@ function MonitorUSBDevices {
         
         # Check for connected devices
         foreach ($device in $currentDevices) {
+            $deviceIdDetails = getDeviceIdDetails $device.InstanceId
+            $vendorId = $deviceIdDetails["Vendor"]
+            $productId = $deviceIdDetails["Product"]
+            $deviceSerialId = $deviceIdDetails["Serial Id"]
+            $deviceVendorAndProductDetails = getVendorAndProductDetails $vendorId $productId
+            $vendorName = $deviceVendorAndProductDetails[0]
+            $productName = $deviceVendorAndProductDetails[1]
+
             if ($connectedDevices -notcontains $device.InstanceId) {
                 $connectedDevices += $device.InstanceId
                 $dateTime = Get-Date -Format "dd-MM-yy HH:mm:ss"
-                $logMessage = "[$dateTime] Connected: $($device.FriendlyName) (Instance ID: $($device.InstanceId))"
+                $logMessage = "[$dateTime]  CONNECTED: $($device.FriendlyName)  VENDOR: $($vendorName)  PRODUCT: $($productName)  SERIAL ID: $($deviceSerialId)"
                 Write-Host $ansiGreen"Connected$($ansiReset): $($device.FriendlyName)"
                 Add-Content -Path $logPath -Value $logMessage
 
-                $deviceIdDetails = getDeviceIdDetails $device.InstanceId
-                $vendorId = $deviceIdDetails["Vendor"]
-                $productId = $deviceIdDetails["Product"]
-                $deviceVendorAndProductDetails = getVendorAndProductDetails $vendorId $productId
                 $message = @"
 A USB drive was plugged into <b>$(($env:USERNAME+"@"+$env:COMPUTERNAME).ToLower())</b>`n
 <b>Name</b>: $($device.FriendlyName)
 <b>Date</b>: $(Get-Date -Format "dd-MMM-yy")
 <b>Time</b>: $(Get-Date -Format "hh:mm:ss tt")
-<b>Vendor</b>: $($deviceVendorAndProductDetails[0])
-<b>Product</b>: $($deviceVendorAndProductDetails[1])
-<b>Serial</b>: $($deviceIdDetails["Serial No."])
-<b>Size</b>: $(getDriveSize($deviceIdDetails["Serial No."])) GB
+<b>Vendor</b>: $($vendorName)
+<b>Product</b>: $($productName)
+<b>Serial Id</b>: $($deviceSerialId)
+<b>Size</b>: $(getDriveSize($deviceSerialId)) GB
 <b>OS</b>: $($env:OS)
 "@
                 Send-TelegramTextMessage -BotToken $telegramBotToken -ChatID $telegramGroupChatId -Message $message | Out-Null
@@ -98,7 +102,7 @@ A USB drive was plugged into <b>$(($env:USERNAME+"@"+$env:COMPUTERNAME).ToLower(
             if ($currentDevices.InstanceId -notcontains $deviceId) {
                 $connectedDevices = $connectedDevices -ne $deviceId
                 $dateTime = Get-Date -Format "dd-MM-yy HH:mm:ss"
-                $logMessage = "[$dateTime] Disconnected: $($deviceId)"
+                $logMessage = "[$dateTime]  DISCONNECTED: $($deviceId)  VENDOR: $($vendorName)  PRODUCT: $($productName)  SERIAL ID: $($deviceSerialId)"
                 Write-Host $ansiRed"Disconnected$($ansiReset): $($deviceId)"
                 Add-Content -Path $logPath -Value $logMessage
             }
