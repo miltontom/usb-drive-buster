@@ -2,8 +2,9 @@ $ansiRed = "`e[31m"
 $ansiGreen = "`e[32m"
 $ansiReset = "`e[0m"
 
-$telegramBotToken = "6928944018:AAEJD3il9Epd6A0VNEuBKVU3US-0Gqlku6g"
-$telegramGroupChatId = "-4190717908"
+# set the bot token and group chat id
+$telegramBotToken = "nnnnnnnnn:xxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxx"
+$telegramGroupChatId = "-nnnnnnnnn"
 
 function getDeviceIdDetails($instanceId) {
     if ($instanceId -match "VID_([0-9A-F]+)&PID_([0-9A-F]+)\\(.+)") {
