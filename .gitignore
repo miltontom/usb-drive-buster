@@ -3,3 +3,5 @@ restartservice.ps1
 servicestatus.ps1
 startservice.ps1
 stopservice.ps1
+bot_token
+chat_id
