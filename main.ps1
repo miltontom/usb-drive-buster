@@ -88,7 +88,7 @@ function MonitorUSBDevices {
                 Add-Content -Path $logPath -Value $logMessage
 
                 $message = @"
-A USB drive was plugged into <b>$($env:COMPUTERNAME)</b> logged in as $($env:USERNAME)`n
+A USB drive was plugged into <b>$($env:COMPUTERNAME)</b> logged in as <b>$($env:USERNAME)</b>`n
 <b>Name</b>: $($device.FriendlyName)
 <b>Date</b>: $(Get-Date -Format "dd-MMM-yy")
 <b>Time</b>: $(Get-Date -Format "hh:mm:ss tt")
