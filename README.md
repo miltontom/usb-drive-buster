@@ -30,7 +30,7 @@ $telegramGroupChatId = "-nnnnnnnnn"
 
 ### Create a service (Windows)
 
-1. Install `nssm` from the scoop package manager
+1. Install `[nssm](https://scoop.sh/#/apps?q=nssm&id=9bb530a6593cf96fd08e6f78dd9724f5810faeb8)` from the scoop package manager
 2. Create a service
 
     ```powershell
