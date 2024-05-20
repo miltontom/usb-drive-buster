@@ -44,7 +44,7 @@ $telegramGroupChatId = "-nnnnnnnnn"
     ```
     Set "Log on as" to the user account for your system, just specify the username and password for the user account and click `Edit service`.
 
-    ![nssm service editor](previews\nssm.png)
+    ![nssm service editor](previews/nssm.png)
 
     You can also set the startup type, the default is `automatic`
 
