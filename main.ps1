@@ -67,6 +67,13 @@ function MonitorUSBDevices {
     $logPath = $PSScriptRoot+"\usbdrivebuster.log"
     $connectedDevices = @()
 
+    if (!(Test-BotToken $telegramBotToken)) {
+        return 1
+    }
+    
+    $acknowledgementMessage = "Buster at your service!"
+    Send-TelegramTextMessage -BotToken $telegramBotToken -ChatID $telegramGroupChatId -Message $acknowledgementMessage | Out-Null
+
     while ($true) {
         $currentDevices = Get-PnpDevice | Where-Object {$_.Class -eq "USB" -and $_.FriendlyName -like "*USB Mass Storage Device*" -and $_.Present -eq $true}
         
