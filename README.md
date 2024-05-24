@@ -15,12 +15,11 @@ The script runs as a service in the background and monitors for USB flash drives
 * [PoshGram](https://www.powershellgallery.com/packages/PoshGram/2.0.0) module installed
 * Telegram requirements
     * Telegram account
-    * Telegram [bot](https://core.telegram.org/bots#how-do-i-create-a-bot)
+    * Group chat created with [bot](https://core.telegram.org/bots#how-do-i-create-a-bot) as a member
     * Group chat ID (refer this [video](https://youtu.be/UPC5Ck1oU6k?feature=shared&t=17))
-    * Bot must be a member of the group chat
 
 ## Setup
-### Set bot token and chat id
+### Set bot token and chat ID
 In the `main.ps1` script file paste the bot token and chat ID
 ```
 $telegramBotToken = "nnnnnnnnn:xxxxxxx-xxxxxxxxxxxxxxxxxxxxxxxxxxx"
