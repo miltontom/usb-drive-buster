@@ -46,7 +46,7 @@ $telegramGroupChatId = "-nnnnnnnnn"
     ![nssm service editor](previews/nssm.png)
 
 ## Usage
-By default the service won't start automatically at startup. This can be changed by editing `Details > Startup type`. Refer the next section to manage your service.
+By default the service won't start automatically at startup. This can be changed by editing `Details > Startup type`
 
 ![service edit](previews/startup-type.png)  
 
