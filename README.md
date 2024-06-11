@@ -4,7 +4,7 @@ Bust anyone who connects a USB drive to cheat in practical examinations.
 
 ## Why I created this?
 
-As practical examinations in computer science involve writing code, students tend to bring in USB flash drives with source code stored in it and the invigilators may be unaware of this so I decided to implement this system for my college as it was needed.
+As practical examinations in Computer Science involve writing code, students tend to bring in USB drives with source code stored in it and they would connect to the system and copy paste the code without the invigilators knowing about it. This way of cheating was something that I observed in my college, so I decided to put an end to it. My system brings a solution to this problem as if one connects a USB drive, the system sends a message via Telegram to the invigilator about the details of the drive and other log info like date and time etc in a readable way.
 
 ## Working
 
